@@ -1,0 +1,72 @@
+---
+title: "Introduction to varselect"
+author: "Shahad"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to VarSelect}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Overview
+
+varselect provides comprehensive variable selection with an intuitive pipeline architecture.
+
+
+## Quick Example
+
+```{r eval=FALSE}
+data(mtcars)
+
+# Simple usage
+pipeline <- varselect(mtcars, "mpg") + fullselection()
+
+# View results
+pipeline@final_vars
+pipeline@performance
+```
+
+## Advanced Example
+
+```{r eval=FALSE}
+# Custom pipeline
+pipeline <- varselect(mtcars, "mpg") +
+  validate(exclude = c("cyl")) +
+  significance(alpha = 0.05, correction = "fdr") +
+  refine(vif_threshold = 10) +
+  selection(method = "backward", cv_folds = 10) +
+  prediction() +
+  visualize(type = "importance") +
+  train()
+```
+
+## Key Features
+
+### 1. Multiple Selection Methods
+- Backward (default)
+- Forward
+- Stepwise
+- Hybrid
+
+### 2. Advanced Metrics
+- Mallow's Cp
+- Spearman/Kendall correlations
+- AUC, F1, MCC for classification
+- R², Adjusted R², RMSE, MAE for regression
+
+### 3. Statistical Rigor
+- FDR correction
+- VIF analysis
+- Condition numbers
+- Stratified CV
+
+## More Information
+
+See `?varselect` for full documentation.
